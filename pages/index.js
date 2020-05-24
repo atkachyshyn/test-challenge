@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import Main from '../layouts/main'
 
-export default function Home() {
+const Home = () => {
   return (
     <div className="container">
       <Head>
@@ -174,3 +175,7 @@ export default function Home() {
     </div>
   )
 }
+
+Home.Layout = Main
+
+export default Home
