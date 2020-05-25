@@ -1,31 +1,15 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Main from '../layouts/main'
+import Default from '../layouts/Default'
 
 const Home = () => {
   return (
     <div className="container">
-      <Head>
-        <title>Simple online market</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <h1 className="title">
-          Welcome to simple online market
-        </h1>
-
-        <div className="grid">
-          <Link href="/products">
-            <a>Browse products</a>
-          </Link>
-        </div>
-
-      </main>
-
-      <footer>
-       <span>2020</span>
-      </footer>
+      <div className="grid">
+        <Link href="/products">
+          <a>Browse products</a>
+        </Link>
+      </div>
 
       <style jsx>{`
         .container {
@@ -176,6 +160,6 @@ const Home = () => {
   )
 }
 
-Home.Layout = Main
+Home.Layout = Default
 
 export default Home

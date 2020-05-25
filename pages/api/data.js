@@ -1,0 +1,45 @@
+const products = [
+    { 
+        productId: 0,
+        name: 'Apples',
+        price: 1.0,
+        currency: 'USD'
+    },
+    { 
+        productId: 0,
+        name: 'Soup',
+        price: 0.65,
+        currency: 'USD'
+    },
+    { 
+        productId: 0,
+        name: 'Bread',
+        price: 0.8,
+        currency: 'USD',
+    },
+    { 
+        productId: 0,
+        name: 'Milk',
+        price: 1.3,
+        currency: 'USD'
+    },
+]
+
+const volumeDiscounts = [
+    {
+
+    }
+]
+
+const discounts = [
+    {
+        
+    }
+]
+
+export default {
+    products,
+    volumeDiscounts,
+    discounts
+}
+
