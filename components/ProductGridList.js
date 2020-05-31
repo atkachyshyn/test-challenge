@@ -1,58 +1,95 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/Info';
-import PanoramaIcon from '@material-ui/icons/Panorama';
+import Link from 'next/link'
+import React, { useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { Paper, Card, CardContent, CardMedia, CardActionArea, CardActions, Typography, Button, Slider, Grid } from '@material-ui/core'
+import { useDispatch, useSelector } from 'react-redux'
+import { Busket } from '../services/busket'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
-  },
-  gridList: {
-    width: 500,
-    height: 450,
-  },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)',
-  },
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+        width: '100%'
+    },
+    details: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyItems: 'flex-start'
+    },
+    content: {
+        flex: '1 0 auto',
+    },
+    cover: {
+        height: 240,
+    },
+    actions: {
+        padding: '0 2rem'
+    }
 }));
 
 export default function ProductGridList({tileData}) {
-  const classes = useStyles();
+    const classes = useStyles();
+    const dispatch = useDispatch()
 
-  console.log(tileData)
+    const busketItems = useSelector(state => state.busket)
+    const initialState = Object.assign({}, ...Object.values(busketItems).map(item => ({...{}, [item.id]: item.quantity})))
 
-  tileData = tileData || []
+    const [quantity, setQuantity] = useState(initialState)
 
-  return (
-    <div className={classes.root}>
-      <GridList cellHeight={180} className={classes.gridList}>
-        <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-          <ListSubheader component="div">Products</ListSubheader>
-        </GridListTile>
-        {tileData.map((tile) => (
-          <GridListTile key={tile.img}>
-            {tile.img ? <img src={tile.img} alt={tile.name} /> : <PanoramaIcon />}
-            <GridListTileBar
-              title={tile.title}
-              subtitle={<span>price: {tile.price} USD</span>}
-              actionIcon={
-                <IconButton aria-label={`info about ${tile.name}`} className={classes.icon}>
-                  <InfoIcon />
-                </IconButton>
-              }
-            />
-          </GridListTile>
-        ))}
-      </GridList>
+    tileData = tileData || []
+
+    const onClick = (e, id) => {
+        dispatch(Busket.addToBusket({id, quantity: quantity[id]}))
+    }
+
+    return (
+        <div className={classes.root}>
+            <Grid container justify="center" spacing={2}>
+            {tileData.map((tile) => (
+            <Grid key={tile.id} item xs={12} sm={6}>
+                <Paper className={classes.paper}>
+                    <Card>
+                        <Link href={`/products/${tile.id}`}>
+                            <CardActionArea className={classes.details}>
+                                <CardMedia
+                                    className={classes.cover}
+                                    component="img"
+                                    alt={tile.name}
+                                    image={tile.img}
+                                    title={tile.name}
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        {tile.name}
+                                    </Typography>
+                                    {tile.shortDescription ?
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            {tile.shortDescription}
+                                        </Typography> : <span></span>
+                                    }
+                                </CardContent>
+                            </CardActionArea>
+                        </Link>
+                        <CardActions className={classes.actions}>
+                            <Slider
+                                defaultValue={0}
+                                onChange={(e, value) => setQuantity(quantity => ({...quantity, ...{[tile.id]: value}}))}
+                                getAriaValueText={() => quantity[tile.id]}
+                                aria-labelledby="discrete-slider"
+                                valueLabelDisplay="auto"
+                                value={quantity[tile.id]}
+                                step={1}
+                                min={0}
+                                max={10}
+                            />
+                            <Button size="small" color="primary" onClick={(e) => onClick(e, tile.id)}>Add to busket</Button>
+                        </CardActions>
+                    </Card>
+                </Paper>
+            </Grid>
+            ))}
+        </Grid>
     </div>
-  );
+    );
 }

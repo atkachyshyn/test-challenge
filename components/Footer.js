@@ -1,5 +1,5 @@
 const Footer = () => (
-    <div>2020</div>
+    <span></span>
 )
 
 export default Footer

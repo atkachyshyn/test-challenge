@@ -1,7 +1,9 @@
+import Link from 'next/link'
 import { AppBar, Toolbar, IconButton, Typography, Badge } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import useScrollTrigger from '@material-ui/core/useScrollTrigger'
 import { ShoppingBasket } from '@material-ui/icons'
-import MenuIcon from '@material-ui/icons/Menu'
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -15,52 +17,52 @@ const useStyles = makeStyles((theme) => ({
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
+      "& a": {
+        textDecoration: 'none',
+        cursor: 'pointer',
+        color: 'inherit'
+      }
     },
-    inputRoot: {
-      color: 'inherit',
-    },
-    sectionDesktop: {
-      display: 'none',
-      [theme.breakpoints.up('md')]: {
-        display: 'flex',
-      },
-    },
-    sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
-      },
-    },
-  }));
+}))
+
+function ElevationScroll(props) {
+    const { children } = props;
+
+    const trigger = useScrollTrigger({
+        disableHysteresis: true,
+        threshold: 0,
+    });
+  
+    return React.cloneElement(children, {
+        elevation: trigger ? 4 : 0,
+    });
+}
   
 
-const Header = () => {
+const Header = (props) => {
     const classes = useStyles();
 
+    const busketItems = useSelector(state => state.busket)
+
     return (
-        <AppBar position="static">
+        <ElevationScroll>
+        <AppBar>
             <Toolbar>
-            <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="open drawer"
-            >
-                <MenuIcon />
-            </IconButton>
-            <Typography className={classes.title} variant="h6" noWrap>
-                Simple online market
-            </Typography>
-            <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-                <IconButton edge="end" aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                    <ShoppingBasket />
-                </Badge>
-                </IconButton>
-            </div>
+                <Typography className={classes.title} variant="h6" noWrap>
+                    <Link href='/'>
+                        <a>Simple online market</a>
+                    </Link>
+                </Typography>
+                <div className={classes.grow} />
+                <div className={classes.sectionDesktop}>
+                    <IconButton edge="end" aria-label={`show ${Object.keys(busketItems).length} busket items`} color="inherit">
+                    <Badge badgeContent={Object.keys(busketItems).length} color="secondary">
+                        <Link href='/busket'><ShoppingBasket /></Link>
+                    </Badge>
+                    </IconButton>
+                </div>
             </Toolbar>
-        </AppBar>
+        </AppBar></ElevationScroll>
     )
 }
 

@@ -1,11 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { ThemeProvider } from '@material-ui/core/styles';
-import theme from '../themes/theme';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { ThemeProvider } from '@material-ui/core/styles'
+import theme from '../themes/theme'
+import { END } from 'redux-saga'
+import { wrapper } from '../store/store'
 
 const Noop = ({ children }) => children
 
-export default function MyApp(props) {
+const MyApp = (props) => {
   const { Component, pageProps } = props;
   const Layout = Component.Layout || Noop
 
@@ -28,7 +30,24 @@ export default function MyApp(props) {
   );
 }
 
+MyApp.getInitialProps = async ({Component, ctx}) => {
+    const pageProps = {
+        ...(Component.getInitialProps
+          ? await Component.getInitialProps(ctx)
+          : {}),
+      }
+  
+      if (ctx.req) {
+        ctx.store.dispatch(END)
+        await ctx.store.sagaTask.toPromise()
+      }
+  
+      return { pageProps }
+}
+
 MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired,
 };
+
+export default wrapper.withRedux(MyApp)
