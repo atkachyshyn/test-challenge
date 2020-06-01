@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "deploy": "serverless"
   },
   "dependencies": {
     "@material-ui/core": "latest",
@@ -24,6 +25,7 @@
     "swr": "^0.2.2"
   },
   "devDependencies": {
-    "redux-devtools-extension": "^2.13.8"
+    "redux-devtools-extension": "^2.13.8",
+    "serverless-next.js": "^1.12.0-alpha.7"
   }
 }
