@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Card, CardContent, CardMedia, CardActionArea, CardActions, Typography, Button, Slider, Grid } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
-import { Busket } from '../services/busket'
+import { Basket } from '../services/basket'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,15 +32,15 @@ export default function ProductGridList({tileData}) {
     const classes = useStyles();
     const dispatch = useDispatch()
 
-    const busketItems = useSelector(state => state.busket)
-    const initialState = Object.assign({}, ...Object.values(busketItems).map(item => ({...{}, [item.id]: item.quantity})))
+    const basketItems = useSelector(state => state.basket)
+    const initialState = Object.assign({}, ...Object.values(basketItems).map(item => ({...{}, [item.id]: item.quantity})))
 
     const [quantity, setQuantity] = useState(initialState)
 
     tileData = tileData || []
 
     const onClick = (e, id) => {
-        dispatch(Busket.addToBusket({id, quantity: quantity[id]}))
+        dispatch(Basket.addToBasket({id, quantity: quantity[id]}))
     }
 
     return (
@@ -83,7 +83,7 @@ export default function ProductGridList({tileData}) {
                                 min={0}
                                 max={10}
                             />
-                            <Button size="small" color="primary" onClick={(e) => onClick(e, tile.id)}>Add to busket</Button>
+                            <Button size="small" color="primary" onClick={(e) => onClick(e, tile.id)}>Add to basket</Button>
                         </CardActions>
                     </Card>
                 </Paper>

@@ -7,7 +7,7 @@ import discount from '../pages/api/discount'
 
 //#region Action types
 
-export const ADD_TO_BUSKET = 'ADD_TO_BUSKET'
+export const ADD_TO_BASKET = 'ADD_TO_BASKET'
 
 //#endregion
 
@@ -15,7 +15,7 @@ export const ADD_TO_BUSKET = 'ADD_TO_BUSKET'
 
 export const reducer = (state = {}, action) => {
   switch (action.type) {
-    case ADD_TO_BUSKET: {
+    case ADD_TO_BASKET: {
         if (action.payload.quantity)
             return { ...state, ...{ [action.payload.id]: { id: action.payload.id, quantity: action.payload.quantity } } }
     }
@@ -30,8 +30,8 @@ export const reducer = (state = {}, action) => {
 
 //#region Action creators
 
-export const Busket = {
-  addToBusket: ({id, quantity}) => ({type: ADD_TO_BUSKET, payload: {id, quantity}}),
+export const Basket = {
+  addToBasket: ({id, quantity}) => ({type: ADD_TO_BASKET, payload: {id, quantity}}),
 }
 
 //#endregion
@@ -45,7 +45,6 @@ export const Busket = {
 export function* loadProducts() {
     try {
         const data = yield call(fetch, '/api/product', fetcher)
-        console.log('loadProducts', data)
 
         yield put(Product.storeProducts({products: data}))
     }

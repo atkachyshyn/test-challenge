@@ -2,11 +2,11 @@
 
 import { combineReducers } from 'redux'
 import { reducer as product } from './product'
-import { reducer as busket } from './busket'
+import { reducer as basket } from './basket'
 
 export const rootReducer = combineReducers({
     product,
-    busket
+    basket
 })
 
 //#endregion

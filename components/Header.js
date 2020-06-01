@@ -42,7 +42,7 @@ function ElevationScroll(props) {
 const Header = (props) => {
     const classes = useStyles();
 
-    const busketItems = useSelector(state => state.busket)
+    const basketItems = useSelector(state => state.basket)
 
     return (
         <ElevationScroll>
@@ -55,9 +55,9 @@ const Header = (props) => {
                 </Typography>
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
-                    <IconButton edge="end" aria-label={`show ${Object.keys(busketItems).length} busket items`} color="inherit">
-                    <Badge badgeContent={Object.keys(busketItems).length} color="secondary">
-                        <Link href='/busket'><ShoppingBasket /></Link>
+                    <IconButton edge="end" aria-label={`show ${Object.keys(basketItems).length} basket items`} color="inherit">
+                    <Badge badgeContent={Object.keys(basketItems).length} color="secondary">
+                        <Link href='/basket'><ShoppingBasket /></Link>
                     </Badge>
                     </IconButton>
                 </div>

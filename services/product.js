@@ -32,7 +32,7 @@ export const reducer = (state = {}, action) => {
 export const Product = {
   getProducts: () => ({type: GET_PRODUCTS_REQUEST}),
   storeProducts: (payload) => ({type: GET_PRODUCTS_SUCCESS, payload}),
-  addToBusket: (payload) => ({type: ADD_TO_BUSKET, payload}),
+  addToBasket: (payload) => ({type: ADD_TO_BASKET, payload}),
 }
 
 //#endregion

@@ -1,7 +1,7 @@
 import { Paper, TableContainer, Table, TableHead, TableCell, TableRow, TableBody, TableFooter, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { fetcher } from '../../services'
-import { applicableDiscountRules } from '../../services/busket'
+import { applicableDiscountRules } from '../../services/basket'
 import useSwr from 'swr'
 import Default from '../../layouts/Default'
 import { useSelector } from 'react-redux'
@@ -27,22 +27,22 @@ const getDiscount = (discount, product, quantity) => {
     }
 }
 
-const Busket = () => {
+const Basket = () => {
     const { data: discountData } = useSwr('/api/discount', fetcher)
     const { data: volumeDiscountData } = useSwr('/api/volume-discount', fetcher)
 
     const classes = useStyles()
 
-    const busketItems = useSelector(state => state.busket)
+    const basketItems = useSelector(state => state.basket)
     const products = Object.values(useSelector(state => state.product))
 
-    const discountRules = applicableDiscountRules(discountData, volumeDiscountData, Object.values(busketItems))
+    const discountRules = applicableDiscountRules(discountData, volumeDiscountData, Object.values(basketItems))
 
     let subTotal = 0
     let totalDiscount = 0
 
-    const rows = Object.keys(busketItems).map((productId, index) => {
-        const { quantity } = busketItems[productId]
+    const rows = Object.keys(basketItems).map((productId, index) => {
+        const { quantity } = basketItems[productId]
         const product = products.filter(({id}) => id == productId)[0]
         const discountRule = discountRules.filter(discountRule => discountRule.productId == productId)[0]
 
@@ -104,11 +104,11 @@ const Busket = () => {
                     </TableFooter>
                 </Table>
             </TableContainer> 
-            : <Typography>Your busket is empty.</Typography>
+            : <Typography>Your basket is empty.</Typography>
         }</React.Fragment>
     )
 }
 
-Busket.Layout = Default
+Basket.Layout = Default
 
-export default Busket
+export default Basket
