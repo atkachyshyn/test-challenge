@@ -1,0 +1,37 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@0.1.13
+  
+jobs:
+  build-and-deploy:
+    docker:
+      - image: circleci/node:10.16.3
+    working_directory: ~/test-challenge
+    steps:
+      - checkout
+      - run: sudo npm install -g serverless 
+      - aws-cli/install
+      - aws-cli/configure:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - run: yarn
+      - run: yarn build
+      - run: yarn deploy
+  build-and-test:
+    docker:
+      - image: circleci/node:10.16.3
+    working_directory: ~/test-challenge
+    steps:
+      - checkout
+      - run: yarn
+      - run: yarn test
+
+workflows:
+    build-and-deploy:
+      jobs:
+        - build-and-deploy:
+            context: aws
+    build-and-test:
+      jobs:
+        - build-and-test
